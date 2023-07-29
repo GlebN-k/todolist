@@ -1,6 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { FilterValuesType } from "./App";
 import s from "../src/Todolist.module.css";
+import { CheckBox } from "./components/CheckBox";
 
 type TaskType = {
   id: string;
@@ -18,8 +19,9 @@ type PropsType = {
 };
 
 export function Todolist(props: PropsType) {
-  let [title, setTitle] = useState("");
+  const [title, setTitle] = useState("");
   const [error, setError] = useState<null | string>(null);
+  const [buttonName, setButtonName] = useState('all')
 
   const addTask = () => {
     if (title.trim()) {
@@ -41,9 +43,19 @@ export function Todolist(props: PropsType) {
     }
   };
 
-  const onAllClickHandler = () => props.changeFilter("all");
-  const onActiveClickHandler = () => props.changeFilter("active");
-  const onCompletedClickHandler = () => props.changeFilter("completed");
+  // const onAllClickHandler = () => props.changeFilter("all");
+  // const onActiveClickHandler = () => props.changeFilter("active");
+  // const onCompletedClickHandler = () => props.changeFilter("completed");
+
+  const tsarFoo = (name: FilterValuesType) => {
+    props.changeFilter(name);
+    setButtonName(name)
+  }
+
+  const changeCheckBoxHandler = (taskId: string, e: ChangeEvent<HTMLInputElement>) => {
+    props.changeCheckBoxStatus(taskId, e.currentTarget.checked);
+    // console.log(e.currentTarget.checked)
+  };
 
   return (
     <div>
@@ -61,18 +73,20 @@ export function Todolist(props: PropsType) {
       <ul>
         {props.tasks.map((t) => {
           const onClickHandler = () => props.removeTask(t.id);
-          const changeCheckBoxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            props.changeCheckBoxStatus(t.id, e.currentTarget.checked);
-            // console.log(e.currentTarget.checked)
-          };
+          // const changeCheckBoxHandler = (e: ChangeEvent<HTMLInputElement>) => {
+          //   props.changeCheckBoxStatus(t.id, e.currentTarget.checked);
+          //   // console.log(e.currentTarget.checked)
+          // };
 
           return (
-            <li key={t.id}>
-              <input
+            <li key={t.id} className={t.isDone ? s.isDone : ''}>
+              <CheckBox changeCheckBoxHandler={changeCheckBoxHandler} checked={t.isDone} id={t.id}/>
+              {/* <input
                 type="checkbox"
                 onChange={changeCheckBoxHandler}
                 checked={t.isDone}
-              />
+                
+              /> */}
               <span>{t.title}</span>
               <button onClick={onClickHandler}>x</button>
             </li>
@@ -80,9 +94,9 @@ export function Todolist(props: PropsType) {
         })}
       </ul>
       <div>
-        <button className={s.activeFilter} onClick={onAllClickHandler}>All</button>
-        <button className={s.activeFilter} onClick={onActiveClickHandler}>Active</button>
-        <button className={s.activeFilter} onClick={onCompletedClickHandler}>Completed</button>
+        <button className={buttonName === 'all' ? s.activeFilter : ''} onClick={() => tsarFoo('all')}>All</button>
+        <button className={buttonName === 'active' ? s.activeFilter : ''} onClick={() => tsarFoo('active')}>Active</button>
+        <button className={buttonName === 'completed' ? s.activeFilter : ''} onClick={() => tsarFoo('completed')}>Completed</button>
       </div>
     </div>
   );
