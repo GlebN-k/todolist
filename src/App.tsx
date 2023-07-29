@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
-import { v1 } from 'uuid';
 import './App.css';
 import {Todolist} from './Todolist';
-
-
+import { v1 } from 'uuid';
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -11,21 +9,21 @@ function App() {
 
     let [tasks, setTasks] = useState([
         { id: v1(), title: "HTML&CSS", isDone: true },
-        { id: v1() , title: "JS", isDone: true },
+        { id: v1(), title: "JS", isDone: true },
         { id: v1(), title: "ReactJS", isDone: false },
         { id: v1(), title: "Rest API", isDone: false },
         { id: v1(), title: "GraphQL", isDone: false },
     ]);
 
-    const addTask = (taskName: string) => {
-        const newTask = {id: v1(), title: taskName, isDone: false}
-        setTasks([newTask, ...tasks])
-        console.log('ddd')
-    }
-
     function removeTask(id: string) {
         let filteredTasks = tasks.filter(t => t.id != id);
         setTasks(filteredTasks);
+    }
+
+    function addTask(title: string) {
+        let task = { id: v1(), title: title, isDone: false };
+        let newTasks = [task, ...tasks];
+        setTasks(newTasks);
     }
 
     let [filter, setFilter] = useState<FilterValuesType>("all");
@@ -43,16 +41,22 @@ function App() {
         setFilter(value);
     }
 
+    const changeCheckBoxStatus = (taskId: string, status: boolean) => {
+        setTasks(tasks.map(task => task.id === taskId ? {...task, isDone: status } : task))
+        // setTasks()
+        console.log(tasks);
+    }
+
     return (
         <div className="App">
             <Todolist title="What to learn"
                       tasks={tasksForTodolist}
-                      addTask={addTask}
                       removeTask={removeTask}
-                      changeFilter={changeFilter} />
+                      changeFilter={changeFilter}
+                      addTask={addTask}
+                      changeCheckBoxStatus={changeCheckBoxStatus} />
         </div>
     );
 }
 
 export default App;
-
