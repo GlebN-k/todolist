@@ -16,7 +16,7 @@ function App() {
     ]);
 
     function removeTask(id: string) {
-        let filteredTasks = tasks.filter(t => t.id != id);
+        let filteredTasks = tasks.filter(t => t.id !== id);
         setTasks(filteredTasks);
     }
 
@@ -43,8 +43,6 @@ function App() {
 
     const changeCheckBoxStatus = (taskId: string, status: boolean) => {
         setTasks(tasks.map(task => task.id === taskId ? {...task, isDone: status } : task))
-        // setTasks()
-        console.log(tasks);
     }
 
     return (
