@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useState, KeyboardEvent  } from "react";
+import React, {ChangeEvent, useState, KeyboardEvent} from "react";
+import {Button, TextField} from "@mui/material";
+import AddTaskIcon from '@mui/icons-material/AddTask';
 
 type PropsType = {
     callback: (newTitle: string) => void
@@ -6,7 +8,7 @@ type PropsType = {
 }
 
 const AddItemForm: React.FC<PropsType> = (props) => {
-  
+
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
@@ -33,17 +35,23 @@ const AddItemForm: React.FC<PropsType> = (props) => {
 
 
     return (
-    <div>
-      <input
-        value={title}
-        onChange={onChangeHandler}
-        onKeyPress={onKeyPressHandler}
-        className={error ? "error" : ""}
-      />
-      <button onClick={addTask}>+</button>
-      {error && <div className="error-message">{error}</div>}
-    </div>
-  );
+
+
+        <div>
+
+            <input
+                value={title}
+                onChange={onChangeHandler}
+                onKeyPress={onKeyPressHandler}
+                className={error ? "error" : ""}
+            />
+            <Button onClick={addTask} >
+                <AddTaskIcon fontSize={'small'}/>
+            </Button>
+            {error && <div className="error-message">{error}</div>}
+        </div>
+
+    );
 };
 
 export default AddItemForm;

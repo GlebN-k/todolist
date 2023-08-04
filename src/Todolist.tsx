@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState, KeyboardEvent } from "react";
 import AddItemForm from "./AddItemForm";
 import { FilterValuesType } from "./App";
 import { EditableSpan } from "./EditableSpan";
+import {Button, Typography} from "@mui/material";
 
 export type TaskType = {
   id: string;
@@ -46,12 +47,12 @@ const updateTaskHandler = (taskId: string, title: string) => {
  
   return (
     <div>
-      <h3>
+      <Typography align={'center'} variant={'h6'}>
         {/* {" "} */}
         {/* {props.title} */}
         <EditableSpan oldTitle={props.title} callback={updateTodolistTitle} />
         <button onClick={removeTodolist}>x</button>
-      </h3>
+      </Typography>
       {/*   */}
       <AddItemForm callback={addTaskHandler} />
       <ul>
@@ -82,24 +83,27 @@ const updateTaskHandler = (taskId: string, title: string) => {
         })}
       </ul>
       <div>
-        <button
+        <Button
           className={props.filter === "all" ? "active-filter" : ""}
           onClick={onAllClickHandler}
+          variant={props.filter === "all" ? "contained" : 'text'}
         >
           All
-        </button>
-        <button
+        </Button>
+        <Button
           className={props.filter === "active" ? "active-filter" : ""}
           onClick={onActiveClickHandler}
+          variant={props.filter === "active" ? "contained" : 'text'}
         >
           Active
-        </button>
-        <button
+        </Button>
+        <Button
           className={props.filter === "completed" ? "active-filter" : ""}
           onClick={onCompletedClickHandler}
+          variant={props.filter === "completed" ? "contained" : 'text'}
         >
           Completed
-        </button>
+        </Button>
       </div>
     </div>
   );
